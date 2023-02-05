@@ -75,8 +75,19 @@ namespace Blog.Api.Controllers
             return BadRequest("Invalid credintials!");
         }
 
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<ActionResult<UserDto>> Profile()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
 
+            if(user == null) return Unauthorized();
 
+            return new UserDto
+            {
+                EmailId = user.Email,
+            };
+        }
 
     }
 }
