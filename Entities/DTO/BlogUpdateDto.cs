@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities.DTO
 {
-    public class LoginResponseDto: UserDto
+    public class BlogUpdateDto: BlogCreateDto
     {
-        public string Token { get; set; }
+        public int Id { get; set; }
     }
 }

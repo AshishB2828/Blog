@@ -14,5 +14,8 @@ namespace Entities.DataAccess
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Blog> Blogs { get; set; }
+
     }
 }

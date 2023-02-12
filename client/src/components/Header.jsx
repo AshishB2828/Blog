@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
+import { useContext } from 'react';
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom'
+import { UserContext } from '../context/UserContetx';
 import blogApis from '../utils/blogAPI';
 
 const Header = () => {
 
   const [emailId, setEmailId] = useState(null)
-
+  const { userInfo, setUserInfo } = useContext(UserContext)
   useEffect(() => {
       checkUserAuthenticated();
   },[])
@@ -15,9 +17,8 @@ const Header = () => {
   async function checkUserAuthenticated(){
     try {
       let response = await blogApis.Account.profile();
-      console.log(response);
-      setEmailId(response?.emailId)
-
+      //console.log(response);
+      setUserInfo(response);
     } catch (error) {
       console.log(error)
     }
@@ -25,22 +26,22 @@ const Header = () => {
 
  async function logout(){
   localStorage.removeItem("token");
-  setEmailId(null)
- }
+  setUserInfo(null);
+}
 
   return (
     <header>
     <Link to={"/"} className="logo">MyBlog</Link>
     <nav>
-      {!emailId && 
+      {!userInfo?.emailId && 
       <>
         <Link to={"/login"}>Login</Link>
         <Link to={"/register"}>Register</Link>
       </>}
       {
-        emailId && 
+        userInfo?.emailId && 
         <>
-          <NavLink to={"/create"}>create new post</NavLink>
+          <NavLink to={"/create-post"}>create new post</NavLink>
           <a onClick={logout}>logout</a>
         </>
       }

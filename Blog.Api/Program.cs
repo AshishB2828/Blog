@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Service.ServiceContracts;
+using Service.Services;
 using System.Text;
 using Utils.AuthUtils;
 
@@ -61,6 +64,9 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod().AllowCredentials().AllowAnyHeader());
 });
 
+
+builder.Services.AddScoped<IBlogServices, BlogServices>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -76,6 +82,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Images")),
+    RequestPath = "/images"
+});
 
 app.UseRouting();
 

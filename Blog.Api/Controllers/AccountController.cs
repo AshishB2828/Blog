@@ -42,7 +42,7 @@ namespace Blog.Api.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginData.Password, false);
 
-            if (result.Succeeded) return new LoginResponseDto { Email = user.Email,Token = _tokenServices.CreateToken(user) };
+            if (result.Succeeded) return new LoginResponseDto { EmailId = user.Email,Token = _tokenServices.CreateToken(user) };
 
             return BadRequest("Invalid credintials!");
         }
@@ -70,7 +70,7 @@ namespace Blog.Api.Controllers
 
             var userRegister = await _userManager.CreateAsync(appUser, registerData.Password);
 
-            if (userRegister.Succeeded) return new LoginResponseDto { Email = appUser.Email };
+            if (userRegister.Succeeded) return new LoginResponseDto { EmailId = appUser.Email };
 
             return BadRequest("Invalid credintials!");
         }
@@ -80,7 +80,7 @@ namespace Blog.Api.Controllers
         public async Task<ActionResult<UserDto>> Profile()
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
-
+            
             if(user == null) return Unauthorized();
 
             return new UserDto

@@ -18,6 +18,13 @@ const Account = {
     register: (user) => requests.post('/account/register', user)
 }
 
+const Blog = {
+    all: () => requests.get('/blog/all'),
+    create: (blogData) => requests.post('/blog/create', blogData),
+    update: (blogData) => requests.post('/blog/update', blogData),
+    blogById:(id) => requests.get(`/blog/get/${id}`)
+}
+
 const requests = {
     get:(url) => axios.get(url).then(responseBody),
     post:  (url, body) => axios.post(url, body).then(responseBody).catch(err => console.log(err)),
@@ -30,7 +37,7 @@ const requests = {
 
 const blogApis = {
   
-    Account
+    Account, Blog
 }
 
 export default blogApis;

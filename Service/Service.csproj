@@ -6,10 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
     <ItemGroup>
-        <Folder Include="ServiceContracts\" />
-        <Folder Include="Services\" />
-    </ItemGroup>
-    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
     </ItemGroup>
     <ItemGroup>

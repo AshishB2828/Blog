@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import blogApis from '../utils/blogAPI';
+import { UserContext } from '../context/UserContetx';
 
 const LoginPage = () => {
 
   const [emailId, setEmailId] = useState("")
   const [password, setPassword] = useState("")
   const [redirect, setRedirect] = useState(false);
+  const { userInfo, setUserInfo } = useContext(UserContext)
 
   useEffect(() =>{
 
@@ -19,8 +21,9 @@ const LoginPage = () => {
        const data = await blogApis.Account.login({EmailId: emailId, Password: password});
        console.log(data)
        window.localStorage.setItem("token", JSON.stringify(data.token))
+        setUserInfo(data)
         setRedirect(true);
-      
+        
       } catch (error) {
       console.log(error)
     }
