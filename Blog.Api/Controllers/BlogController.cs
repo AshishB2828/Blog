@@ -79,6 +79,33 @@ namespace Blog.Api.Controllers
             return StatusCode(201, blog);
         }
 
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> DeleteBlogById (int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+            var isDeleted = await _blogServices.DeletePostById(id, user.Id);
+            if(isDeleted)
+            {
+                return StatusCode(200, "Deleted");
+            }
+            else
+            {
+                return StatusCode(404, "Bad Request");
+            }
+        }
+
+        [HttpGet("myblogs")]
+        public async Task<List<BlogResponse>> PostByPersonId()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity?.Name);
+            var blogData = await _blogServices.PostByPersonId(user.Id);
+            foreach (var item in blogData)
+            {
+                item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);
+            }
+            return blogData;
+        }
+
         [NonAction]
         public async Task<string> SaveImage(IFormFile imageFile)
         {

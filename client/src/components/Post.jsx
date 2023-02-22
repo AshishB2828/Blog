@@ -8,7 +8,7 @@ const Post = ({id,title, summary, imageURL, content, createdAt,createdByName}) =
         <img src={imageURL} alt="" />
         </div>
         <div className="texts">
-        <h2><Link to={`post/${id}`}>{title}</Link></h2>
+        <h2><Link to={`/post/${id}`}>{title}</Link></h2>
           <p className="info">
             <a href="" className="author">{createdByName}</a>
             <time>{createdAt}</time>

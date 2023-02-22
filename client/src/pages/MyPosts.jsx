@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { isTokenExist } from '../utils/getToken'
 
 
-const IndexPage = () => {
+const MyPosts = () => {
 
   const [blogs, setBlogs] = useState([])
   const {userInfo} = useContext(UserContext);
@@ -16,16 +16,16 @@ const IndexPage = () => {
 
   useEffect(() => {
     if(isTokenExist()) {
-      GetAllBlogs();
+        GetMyBlogs();
     }else{
       navigate("/login")
     }
   }, [])
 
-  async function GetAllBlogs() {
+  async function GetMyBlogs() {
     try {
       setLoading(true);
-      const allPosts = await blogApis.Blog.all();
+      const allPosts = await blogApis.Blog.currentUserBlogs();
       setBlogs(allPosts ?? []);
       setLoading(false);
       // console.log(allPosts)
@@ -49,4 +49,4 @@ const IndexPage = () => {
   )
 }
 
-export default IndexPage
+export default MyPosts

@@ -42,7 +42,9 @@ namespace Blog.Api.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginData.Password, false);
 
-            if (result.Succeeded) return new LoginResponseDto { EmailId = user.Email,Token = _tokenServices.CreateToken(user) };
+            if (result.Succeeded) return new LoginResponseDto 
+            { EmailId = user.Email,Token = _tokenServices.CreateToken(user), Id = user.Id
+            };
 
             return BadRequest("Invalid credintials!");
         }
@@ -86,6 +88,7 @@ namespace Blog.Api.Controllers
             return new UserDto
             {
                 EmailId = user.Email,
+                Id = user.Id
             };
         }
 

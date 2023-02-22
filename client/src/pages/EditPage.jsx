@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import Editor from '../components/Editor'
+import { UserContext } from '../context/UserContetx';
 import blogApis from '../utils/blogAPI';
+import { isTokenExist } from '../utils/getToken';
 
 const EditPage = () => {
 
@@ -12,24 +14,37 @@ const EditPage = () => {
     const [content,setContent] = useState('');
     const [files, setFiles] = useState('');
     const [redirect,setRedirect] = useState(false);
+    const [img, setImg] = useState({})
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
+    const {userInfo} = useContext(UserContext);
+
 
     useEffect(() => {
-        GetBlogById(id)
-      }, []);
-
-      async function GetBlogById(id) {
+      if(id && isTokenExist()) {
+          GetBlogById(id);
+      }else{
+        navigate("/login")
+      }
+    },[id])
+    async function GetBlogById(id) {
         try {
+            setLoading(true)
             const blog = await blogApis.Blog.blogById(id)
             setTitle(blog.title);
             setContent(blog.content);
             setSummary(blog.summary);
-            console.log(blog)
+            setImg(blog.imageURL)
+            setLoading(false)
         } catch (error) {
+            setLoading(false)
             console.log(error)
         }
     }
     async function updatePost(ev) {
         ev.preventDefault();
+        setLoading(true)
+
         const data = new FormData();
         data.set('title', title);
         data.set('summary', summary);
@@ -40,14 +55,23 @@ const EditPage = () => {
         }
         try {
             const updatedBlog = await blogApis.Blog.update(data);
+            setLoading(false)
             setRedirect(true);
         } catch (error) {
+            setLoading(false)
             console.log(error)
         }
       }
+    async function FileChange(ev){
+      setFiles(ev.target.files);
+      setImg(URL.createObjectURL(ev.target.files[0]))
+    }
     if (redirect) {
         return <Navigate to={'/post/'+id} />
       }
+  if(loading){
+    return <div>Loading....</div>
+  }
   return (
     <form onSubmit={updatePost}>
       <input type="title"
@@ -58,8 +82,11 @@ const EditPage = () => {
              placeholder={'Summary'}
              value={summary}
              onChange={ev => setSummary(ev.target.value)} />
+      <div>
+        <img src={img} width='200' height='200'/>
       <input type="file"
-             onChange={ev => setFiles(ev.target.files)} />
+             onChange={FileChange} />
+      </div>
       <Editor onChange={setContent} value={content} />
       <button style={{marginTop:'5px'}}>Update post</button>
     </form>

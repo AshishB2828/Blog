@@ -16,5 +16,7 @@ namespace Service.ServiceContracts
 
         Task<List<BlogResponse>> GetAllBlogs();
         Task<BlogResponse> GetPostById(int id);
+        Task<bool> DeletePostById(int id, int userId);
+        Task<List<BlogResponse>> PostByPersonId(int userId);
     }
 }

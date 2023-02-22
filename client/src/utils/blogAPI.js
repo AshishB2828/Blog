@@ -11,6 +11,23 @@ axios.interceptors.request.use(config => {
 
 });
 
+
+axios.interceptors.response.use(res => {
+    return res;
+}, (error) =>{
+    const {data, status} = error.response;
+    switch(status) {
+        case 401 : {
+            window.localStorage.removeItem("token");
+            window.location.href = "/login";
+            break;
+        }
+        default:
+            break;
+    }
+    return Promise.reject(error);
+})
+
 const responseBody = (response) => response.data;
 const Account = {
     profile: () => requests.get('/account/Profile'),
@@ -22,12 +39,14 @@ const Blog = {
     all: () => requests.get('/blog/all'),
     create: (blogData) => requests.post('/blog/create', blogData),
     update: (blogData) => requests.post('/blog/update', blogData),
-    blogById:(id) => requests.get(`/blog/get/${id}`)
+    blogById:(id) => requests.get(`/blog/get/${id}`),
+    deleteBlogById:(id) => requests.del(`/blog/delete/${id}`),
+    currentUserBlogs:() => requests.get('/blog/myblogs')
 }
 
 const requests = {
     get:(url) => axios.get(url).then(responseBody),
-    post:  (url, body) => axios.post(url, body).then(responseBody).catch(err => console.log(err)),
+    post:  (url, body) => axios.post(url, body).then(responseBody),
     put:  (url, body) => {
         console.log(body)
         return axios.put(url, body).then(responseBody)},

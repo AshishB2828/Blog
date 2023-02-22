@@ -142,8 +142,8 @@ div.content li{
   margin-bottom: 10px;
 }
 div.edit-row{
-  text-align: center;
-  margin-bottom: 20px;
+  /* text-align: center; */
+  /* margin-bottom: 20px; */
 }
 div.post-page a.edit-btn{
   background-color: #333;
@@ -157,4 +157,36 @@ div.post-page a.edit-btn{
 }
 a svg{
   height:20px;
+}
+.post .image img{
+  width:  400px;
+  height: 400px;
+  background-size: cover;
+}
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+.postCreateBtn{
+  width: fit-content;
+  background-color: green;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  color: #fff;
+  margin: 2px;
+}
+.small-icon{
+  width: 25px;
+  height: 25px;
+}
+.edit-icon{
+  color: green;
+}
+.delete-icon {
+  color: red;
 }

@@ -49,6 +49,16 @@ namespace Service.Services
 
         }
 
+        public async Task<bool> DeletePostById(int id, int userId)
+        {
+            var blogInDb = await _blogContext.Blogs.FirstOrDefaultAsync(i => i.Id == id);
+            if (blogInDb == null) return false;
+            if (blogInDb.CreatedBy != userId) return false;
+             _blogContext.Blogs.Remove(blogInDb);
+             await _blogContext.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<List<BlogResponse>> GetAllBlogs()
         {
             var blogs = await _blogContext.Blogs
@@ -94,7 +104,7 @@ namespace Service.Services
 
             var blogInDb =  await  _blogContext.Blogs.FirstOrDefaultAsync(i => i.Id == blogUpdate.Id);
             if (blogInDb == null) return null;
-            
+            if (blogInDb.CreatedBy != currentUserId) return null; 
             blogInDb.Title = blogUpdate.Title;
             blogInDb.Summary = blogUpdate.Summary;
             blogInDb.Content = blogUpdate.Content;
@@ -112,6 +122,27 @@ namespace Service.Services
                 ImageURL = blogInDb.ImageUrl ?? "",
                 Id = blogInDb.Id
             };
+        }
+
+
+        public async Task<List<BlogResponse>> PostByPersonId(int userId)
+        {
+            var blogs = await _blogContext.Blogs
+                                .Where(b => b.CreatedBy == userId)
+                                .Include(b => b.CreatedByUser)
+                                .Select(blog => new BlogResponse
+                                {
+                                    Title = blog.Title,
+                                    Content = blog.Content,
+                                    CreatedAt = blog.CreatedAt.ToString("dd/MM/yyyy"),
+                                    CreatedBy = blog.CreatedBy,
+                                    Summary = blog.Summary,
+                                    ImageURL = blog.ImageUrl ?? "",
+                                    Id = blog.Id,
+                                    CreatedByName = blog.CreatedByUser.Email
+                                })
+                                .ToListAsync();
+            return blogs;
         }
     }
 }
