@@ -38,7 +38,7 @@ namespace Blog.Api.Controllers
             if(!ModelState.IsValid) return BadRequest(loginData);
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginData.EmailId);
-            if (user == null) return Unauthorized();
+            if (user == null) return BadRequest("Invalid credintials!");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginData.Password, false);
 

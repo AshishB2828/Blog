@@ -28,9 +28,9 @@ namespace Blog.Api.Controllers
 
         [HttpGet("All")]
         [Authorize]
-        public async Task<List<BlogResponse>> GetAllBlogs()
+        public async Task<List<BlogResponse>> GetAllBlogs([FromQuery]int page)
         {
-            var blogData =  await _blogServices.GetAllBlogs();
+            var blogData =  await _blogServices.GetAllBlogs(page);
             foreach (var item in blogData)
             {
                 item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);
@@ -95,10 +95,10 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet("myblogs")]
-        public async Task<List<BlogResponse>> PostByPersonId()
+        public async Task<List<BlogResponse>> PostByPersonId([FromQuery] int page)
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
-            var blogData = await _blogServices.PostByPersonId(user.Id);
+            var blogData = await _blogServices.PostByPersonId(user.Id, page);
             foreach (var item in blogData)
             {
                 item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);

@@ -13,6 +13,7 @@ const IndexPage = () => {
   const {userInfo} = useContext(UserContext);
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     if(isTokenExist()) {
@@ -20,12 +21,13 @@ const IndexPage = () => {
     }else{
       navigate("/login")
     }
-  }, [])
+  }, [page])
 
   async function GetAllBlogs() {
     try {
       setLoading(true);
-      const allPosts = await blogApis.Blog.all();
+      const allPosts = await blogApis.Blog.all(page);
+  
       setBlogs(allPosts ?? []);
       setLoading(false);
       // console.log(allPosts)
@@ -33,6 +35,10 @@ const IndexPage = () => {
       setLoading(false);
       console.log(error)
     }
+  }
+
+  function LoadMorePosts() {
+    setPage(page+1);
   }
 
   if(loading) return <div>Loading....</div>
@@ -44,7 +50,7 @@ const IndexPage = () => {
           return <Post key={blog.id} {...blog} />
         })
       }
-    
+      <button onClick={LoadMorePosts} className='loadmore'>Load more</button>
     </>
   )
 }

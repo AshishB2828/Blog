@@ -11,7 +11,8 @@ const MyPosts = () => {
 
   const [blogs, setBlogs] = useState([])
   const {userInfo} = useContext(UserContext);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -20,12 +21,12 @@ const MyPosts = () => {
     }else{
       navigate("/login")
     }
-  }, [])
+  }, [page])
 
   async function GetMyBlogs() {
     try {
       setLoading(true);
-      const allPosts = await blogApis.Blog.currentUserBlogs();
+      const allPosts = await blogApis.Blog.currentUserBlogs(page);
       setBlogs(allPosts ?? []);
       setLoading(false);
       // console.log(allPosts)
@@ -44,6 +45,7 @@ const MyPosts = () => {
           return <Post key={blog.id} {...blog} />
         })
       }
+      <button onClick={() => setPage(page+1)} className='loadmore'>Load more</button>
     
     </>
   )

@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loading from '../components/Loading';
 import blogApis from '../utils/blogAPI';
 
 const RegisterPage = () => {
@@ -11,18 +13,25 @@ const RegisterPage = () => {
   const [password2, setPassword2] = useState("")
   const [password2Invalid, setPassword2Invalid] = useState(false)
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false)
 
 
   async function register(event) {
     event.preventDefault();
     if(password2Invalid || passwordInvalid || emailInvalid ) return;
+    setLoading(true);
     try {
        const data = await blogApis.Account.register({EmailId: emailId, Password: password});
        console.log( "Data  => ", data)
         setRedirect(true);
-        
+        setLoading(false);
       } catch (error) {
       console.log(error)
+      if(error.response?.status == 400){
+        const errMsg = error.response?.data ?? "Something went wrong!"
+        toast.error(errMsg)
+      }
+      setLoading(false);
     }
   }
 
@@ -56,6 +65,10 @@ function ValidateFieldOnKeyUp(fieldName, e){
 
 if(redirect) {
   return <Navigate to={"/login"}/>
+}
+
+if(loading) {
+  return <Loading/>
 }
 
   return (

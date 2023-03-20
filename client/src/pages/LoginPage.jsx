@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom';
 import blogApis from '../utils/blogAPI';
 import { UserContext } from '../context/UserContetx';
+import {toast} from 'react-toastify';
+import Loading from '../components/Loading';
+
 
 const LoginPage = () => {
 
@@ -10,11 +13,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("")
   const [passwordInvalid, setPasswordInvalid] = useState(false)
   const [redirect, setRedirect] = useState(false);
-  const { userInfo, setUserInfo } = useContext(UserContext)
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const [loading, setLoading] = useState(false)
 
 
   async function login(event) {
     event.preventDefault();
+    setLoading(true);
+  
     try {
        const data = await blogApis.Account.login({EmailId: emailId, Password: password});
       //  console.log(data)
@@ -22,9 +28,19 @@ const LoginPage = () => {
        window.localStorage.setItem("user", JSON.stringify(data))
         setUserInfo(data)
         setRedirect(true);
+        setLoading(false);
+
         
       } catch (error) {
       console.log(error)
+      if(error.response?.status == 400) {
+        const errorMsg = error.response.data ?? "Please check the email and password!"
+        toast.error(errorMsg, {
+          position: toast.POSITION.TOP_LEFT
+        });
+        
+      }
+      setLoading(false);
     }
   }
 
@@ -47,7 +63,9 @@ function ValidateLoginFields(fieldName, e){
 if(redirect) {
   return <Navigate to={"/"}/>
 }
-
+if(loading) {
+  return <Loading />
+}
   return (
     <form className='login' onSubmit={login}>
         <h1 >Login</h1>

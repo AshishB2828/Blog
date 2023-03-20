@@ -12,10 +12,12 @@ import PostPage from './pages/PostPage';
 import EditPage from './pages/EditPage';
 import PageNotFound from './pages/PageNotFound';
 import MyPosts from './pages/MyPosts';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <UserContextProvider>
+      <ToastContainer />
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route  index element ={ <IndexPage/>}/>

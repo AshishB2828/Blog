@@ -59,9 +59,11 @@ namespace Service.Services
             return true;
         }
 
-        public async Task<List<BlogResponse>> GetAllBlogs()
+        public async Task<List<BlogResponse>> GetAllBlogs(int page)
         {
+            var perPageContent = 2;
             var blogs = await _blogContext.Blogs
+                                .Take(page * perPageContent)
                                 .Include(b => b.CreatedByUser)
                                 .Select(blog => new BlogResponse
                                 {
@@ -125,9 +127,11 @@ namespace Service.Services
         }
 
 
-        public async Task<List<BlogResponse>> PostByPersonId(int userId)
+        public async Task<List<BlogResponse>> PostByPersonId(int userId, int page)
         {
+            var perPage = 2;
             var blogs = await _blogContext.Blogs
+                .Take(page * perPage)
                                 .Where(b => b.CreatedBy == userId)
                                 .Include(b => b.CreatedByUser)
                                 .Select(blog => new BlogResponse

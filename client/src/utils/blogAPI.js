@@ -36,12 +36,12 @@ const Account = {
 }
 
 const Blog = {
-    all: () => requests.get('/blog/all'),
+    all: (pageNumber=1) => requests.get('/blog/all?page='+pageNumber),
     create: (blogData) => requests.post('/blog/create', blogData),
     update: (blogData) => requests.post('/blog/update', blogData),
     blogById:(id) => requests.get(`/blog/get/${id}`),
     deleteBlogById:(id) => requests.del(`/blog/delete/${id}`),
-    currentUserBlogs:() => requests.get('/blog/myblogs')
+    currentUserBlogs:(pageNumber=1) => requests.get('/blog/myblogs?page='+pageNumber)
 }
 
 const requests = {

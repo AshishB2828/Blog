@@ -190,3 +190,8 @@ a svg{
 .delete-icon {
   color: red;
 }
+
+.loadmore {
+  width: 200px !important;
+  margin: 2px auto;
+}
