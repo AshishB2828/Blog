@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { authAction } from '../store/authSlice';
 import blogApis from '../utils/blogAPI';
-import { UserContext } from '../context/UserContetx';
 
 const LoginPage = () => {
 
@@ -9,20 +10,18 @@ const LoginPage = () => {
   const [emailInvalid, setEmailInvalid] = useState(false)
   const [password, setPassword] = useState("")
   const [passwordInvalid, setPasswordInvalid] = useState(false)
-  const [redirect, setRedirect] = useState(false);
-  const { userInfo, setUserInfo } = useContext(UserContext)
 
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   async function login(event) {
     event.preventDefault();
     try {
        const data = await blogApis.Account.login({EmailId: emailId, Password: password});
       //  console.log(data)
+       dispatch(authAction.login());
        window.localStorage.setItem("token", JSON.stringify(data.token))
        window.localStorage.setItem("user", JSON.stringify(data))
-        setUserInfo(data)
-        setRedirect(true);
-        
+       navigate("/")        
       } catch (error) {
       console.log(error)
     }
@@ -43,11 +42,6 @@ function ValidateLoginFields(fieldName, e){
   }
 }
 
-
-if(redirect) {
-  return <Navigate to={"/"}/>
-}
-
   return (
     <form className='login' onSubmit={login}>
         <h1 >Login</h1>
@@ -63,6 +57,9 @@ if(redirect) {
        { passwordInvalid && <small style={{color:"red"}}>Password Required</small>}
         
           <button disabled={passwordInvalid || emailInvalid }>Login</button>
+          <br/>
+          <p>Go to Signup</p>
+          
     </form>
   )
 }

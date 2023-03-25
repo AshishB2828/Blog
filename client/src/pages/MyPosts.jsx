@@ -15,11 +15,7 @@ const MyPosts = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(isTokenExist()) {
-        GetMyBlogs();
-    }else{
-      navigate("/login")
-    }
+    GetMyBlogs()
   }, [])
 
   async function GetMyBlogs() {

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router';
 import blogApis from '../utils/blogAPI';
 
 const RegisterPage = () => {
@@ -10,8 +10,7 @@ const RegisterPage = () => {
   const [passwordInvalid, setPasswordInvalid] = useState(false)
   const [password2, setPassword2] = useState("")
   const [password2Invalid, setPassword2Invalid] = useState(false)
-  const [redirect, setRedirect] = useState(false);
-
+  const navigate = useNavigate();
 
   async function register(event) {
     event.preventDefault();
@@ -19,8 +18,7 @@ const RegisterPage = () => {
     try {
        const data = await blogApis.Account.register({EmailId: emailId, Password: password});
        console.log( "Data  => ", data)
-        setRedirect(true);
-        
+        navigate("/login")
       } catch (error) {
       console.log(error)
     }
@@ -54,9 +52,6 @@ function ValidateFieldOnKeyUp(fieldName, e){
   }
 }
 
-if(redirect) {
-  return <Navigate to={"/login"}/>
-}
 
   return (
     <form className='login' onSubmit={register}>
