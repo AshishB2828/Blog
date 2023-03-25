@@ -45,10 +45,10 @@ const PostPage = () => {
     if (!postInfo) return '';
   return (
     <div className="post-page">
-    <h1>{postInfo.title}</h1>
-    <time>{postInfo.createdAt}</time>
+    <h1 className='post-detail-title'>{postInfo.title}</h1>
+    <time className='post-detail-createdat'>{postInfo.createdAt}</time>
 
-    <div className="author">by @{postInfo.createdByName}</div>
+    <div className="post-detail-author">by @{postInfo.createdByName}</div>
     {userInfo?.id === postInfo.createdBy && (
       <div className="edit-row">
         <Link className="" to={`/edit/${postInfo.id}`}>
@@ -67,7 +67,7 @@ const PostPage = () => {
     <div className="image">
       <img src={postInfo.imageURL} alt=""/>
     </div>
-    <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
+    <div className="post-detail-content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
   </div>
   )
 }

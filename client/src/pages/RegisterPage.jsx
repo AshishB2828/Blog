@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
 import blogApis from '../utils/blogAPI';
+import { Link } from 'react-router-dom'
+
 
 const RegisterPage = () => {
 
@@ -55,7 +57,7 @@ function ValidateFieldOnKeyUp(fieldName, e){
 
   return (
     <form className='login' onSubmit={register}>
-        <h1 >Register</h1>
+        <h1 className='register-header'>Register</h1>
         <input type="text" placeholder='email' 
         value={emailId} onChange={e => setEmailId(e.target.value)}
           onBlur={e => ValidateLoginFields('email',e)}
@@ -74,6 +76,9 @@ function ValidateFieldOnKeyUp(fieldName, e){
         {password2Invalid && <small style={{color:"red"}}>Password and Confirm Password don't match</small>}
 
           <button disabled={password2Invalid || passwordInvalid || emailInvalid }>Register</button>
+          <br/>
+          <br/>
+          <span style={{color: 'white'}}><b>Already have an account &nbsp;&nbsp; <Link style={{color: "rgb(0 106 213)"}} to={"/login"}>Login</Link></b></span>
     </form>
   )
 }

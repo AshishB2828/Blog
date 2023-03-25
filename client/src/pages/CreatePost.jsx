@@ -1,10 +1,8 @@
-import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import {useContext, useEffect, useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 import Editor from '../components/Editor';
 import blogApis from "../utils/blogAPI";
-import { UserContext } from "../context/UserContetx";
 import { isTokenExist } from "../utils/getToken";
 
 const CreatePost = () => {
@@ -15,7 +13,6 @@ const CreatePost = () => {
     const [files, setFiles] = useState('');
     const [redirect, setRedirect] = useState(false);
     const navigate = useNavigate()
-    const {userInfo} = useContext(UserContext);
 
 
     useEffect(() => {
@@ -51,10 +48,13 @@ const CreatePost = () => {
              placeholder={'Title'}
              value={title}
              onChange={ev => setTitle(ev.target.value)} />
-      <input type="summary"
+      <textarea type="summary"
+                rows={5}
              placeholder={'Summary'}
              value={summary}
-             onChange={ev => setSummary(ev.target.value)} />
+             onChange={ev => setSummary(ev.target.value)} >
+
+             </textarea>
       <input type="file"
              onChange={ev => setFiles(ev.target.files)} />
       <Editor value={content} onChange={setContent} />

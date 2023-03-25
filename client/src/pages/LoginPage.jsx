@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { authAction } from '../store/authSlice';
 import blogApis from '../utils/blogAPI';
+import {Link} from 'react-router-dom'
 
 const LoginPage = () => {
 
@@ -21,7 +22,7 @@ const LoginPage = () => {
     try {
        const data = await blogApis.Account.login({EmailId: emailId, Password: password});
       //  console.log(data)
-       dispatch(authAction.login());
+       dispatch(authAction.login({user: data, token: data.token}));
        window.localStorage.setItem("token", JSON.stringify(data.token))
        window.localStorage.setItem("user", JSON.stringify(data))
        navigate("/")        
@@ -47,7 +48,7 @@ function ValidateLoginFields(fieldName, e){
 
   return (
     <form className='login' onSubmit={login}>
-        <h1 >Login</h1>
+        <h1 className='login-header'>Login</h1>
         <input type="text" placeholder='email' 
         value={emailId} onChange={e => setEmailId(e.target.value)}
           onBlur={e => ValidateLoginFields('email',e)}
@@ -61,7 +62,9 @@ function ValidateLoginFields(fieldName, e){
         
           <button disabled={passwordInvalid || emailInvalid }>Login</button>
           <br/>
-          <p>Go to Signup</p>
+          <br/>
+          <span style={{color: 'white'}}><b>Don't have an account &nbsp;&nbsp; 
+            <Link style={{color: "rgb(0 106 213)"}} to={"/register"}>Register</Link></b></span>
           
     </form>
   )

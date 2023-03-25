@@ -4,9 +4,11 @@ import Header from './components/Header'
 
 const Layout = () => {
   return (
-    <main>
+    <main style={{background: '#001E3C', minHeight: '100vh'}}>
         <Header />
-        <Outlet />
+        <div className='main-body'>
+          <Outlet />
+        </div>
     </main>
   )
 }

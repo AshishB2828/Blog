@@ -1,12 +1,9 @@
 import './App.css';
-import Header from './components/Header';
-import Post from './components/Post';
 import { Route, Routes } from "react-router-dom"
 import Layout from './Layout';
 import IndexPage from './pages/IndexPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import { UserContext, UserContextProvider } from './context/UserContetx';
 import CreatePost from './pages/CreatePost';
 import PostPage from './pages/PostPage';
 import EditPage from './pages/EditPage';
@@ -16,22 +13,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { authAction } from './store/authSlice';
 import RequireAuth from './components/RequireAuth';
+import PublicRoute from './components/PublicRoute';
 
 function App() {
     const dispatch = useDispatch();
     useEffect(() => {
       if(localStorage.getItem("user")){
-        dispatch(authAction.login())
+        let user = JSON.parse(localStorage.getItem("user"));
+         dispatch(authAction.login({user: user, token: user.token}))
       }
     }, [dispatch])
     const isLoggedIn = useSelector(state => state.isLoggedIn);
-    console.log(isLoggedIn)
   return (
       <Routes>
-        <Route path='/' element={<Layout />}>      
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          
+        <Route path='/' element={<Layout />}>     
+          <Route element={<PublicRoute />}>
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+          </Route> 
           <Route element={<RequireAuth/>}>
             <Route index element ={ <IndexPage/>}/>
             <Route path='/create-post' element={<CreatePost />} />

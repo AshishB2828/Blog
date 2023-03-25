@@ -1,16 +1,12 @@
-import axios from 'axios';
 import React, { useEffect } from 'react'
-import { useContext } from 'react';
-import { useState } from 'react';
-import { Link, Navigate, NavLink } from 'react-router-dom'
-import blogApis from '../utils/blogAPI';
+import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
-import { isTokenExist } from '../utils/getToken';
 import { useDispatch, useSelector } from 'react-redux';
-import { authAction } from '../store/authSlice';
+import { authAction, selectCurrentToken, selectCurrentUser } from '../store/authSlice';
 
 const Header = () => {
-  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const user = useSelector(selectCurrentUser);
+  const isLoggedIn = useSelector(selectCurrentToken);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -27,23 +23,34 @@ const Header = () => {
 
   // if(loading) return <h1>Loading .....</h1>
   return (
-    <header>
-    <Link to={"/"} className="logo">MyBlog</Link>
-    <nav>
-      {!isLoggedIn && 
-      <>
-        <Link to={"/login"}>Login</Link>
-        <Link to={"/register"}>Register</Link>
-      </>}
-      {
-        isLoggedIn && 
-        <>
-          <NavLink to={"/create-post"}>create new post</NavLink>
-          <NavLink to={"/my-posts"}>my posts</NavLink>
-          <a onClick={logout}>logout</a>
-        </>
-      }
-    </nav>
+    <header >
+      <nav className='navbar'>
+      <Link to={"/"} className="logo">MyBlog</Link>
+
+        <div>
+          {
+             isLoggedIn && 
+             <>
+               <NavLink to={"/create-post"}><b>create new post</b></NavLink>
+               <NavLink to={"/my-posts"}><b>my posts</b></NavLink>
+               </>
+          }
+        </div>
+        <div>
+          {!isLoggedIn && 
+          <>
+            <Link to={"/login"}><b>Login</b></Link>
+            <Link to={"/register"}><b>Register</b></Link>
+          </>}
+          {
+            isLoggedIn && 
+            <>
+              <span><b>{user?.emailId}</b></span>
+              <a onClick={logout}><b>logout</b></a>
+            </>
+          }
+        </div>
+      </nav>
   </header>
     )
 }

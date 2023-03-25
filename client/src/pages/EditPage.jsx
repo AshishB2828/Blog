@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Editor from '../components/Editor'
 import blogApis from '../utils/blogAPI';
 
@@ -71,10 +71,11 @@ const EditPage = () => {
              placeholder={'Title'}
              value={title}
              onChange={ev => setTitle(ev.target.value)} />
-      <input type="summary"
+      <textarea type="summary"
+            rows={5}
              placeholder={'Summary'}
              value={summary}
-             onChange={ev => setSummary(ev.target.value)} />
+             onChange={ev => setSummary(ev.target.value)} ></textarea>
       <div>
         <img src={img} width='200' height='200'/>
       <input type="file"
