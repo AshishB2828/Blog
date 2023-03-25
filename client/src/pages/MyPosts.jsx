@@ -2,31 +2,23 @@ import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
 import Post from '../components/Post'
 import blogApis from '../utils/blogAPI'
-import { UserContext } from '../context/UserContetx'
-import { Link, useNavigate } from 'react-router-dom'
-import { isTokenExist } from '../utils/getToken'
+import {  useNavigate } from 'react-router-dom'
 
 
 const MyPosts = () => {
 
   const [blogs, setBlogs] = useState([])
-  const {userInfo} = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(isTokenExist()) {
-        GetMyBlogs();
-    }else{
-      navigate("/login")
-    }
-  }, [page])
+    GetMyBlogs()
+  }, [])
 
   async function GetMyBlogs() {
     try {
       setLoading(true);
-      const allPosts = await blogApis.Blog.currentUserBlogs(page);
+      const allPosts = await blogApis.Blog.currentUserBlogs();
       setBlogs(allPosts ?? []);
       setLoading(false);
       // console.log(allPosts)
@@ -45,7 +37,6 @@ const MyPosts = () => {
           return <Post key={blog.id} {...blog} />
         })
       }
-      <button onClick={() => setPage(page+1)} className='loadmore'>Load more</button>
     
     </>
   )

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import Loading from '../components/Loading';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router';
 import blogApis from '../utils/blogAPI';
+import { Link } from 'react-router-dom'
+
 
 const RegisterPage = () => {
 
@@ -12,26 +12,17 @@ const RegisterPage = () => {
   const [passwordInvalid, setPasswordInvalid] = useState(false)
   const [password2, setPassword2] = useState("")
   const [password2Invalid, setPassword2Invalid] = useState(false)
-  const [redirect, setRedirect] = useState(false);
-  const [loading, setLoading] = useState(false)
-
+  const navigate = useNavigate();
 
   async function register(event) {
     event.preventDefault();
     if(password2Invalid || passwordInvalid || emailInvalid ) return;
-    setLoading(true);
     try {
        const data = await blogApis.Account.register({EmailId: emailId, Password: password});
        console.log( "Data  => ", data)
-        setRedirect(true);
-        setLoading(false);
+        navigate("/login")
       } catch (error) {
       console.log(error)
-      if(error.response?.status == 400){
-        const errMsg = error.response?.data ?? "Something went wrong!"
-        toast.error(errMsg)
-      }
-      setLoading(false);
     }
   }
 
@@ -63,17 +54,10 @@ function ValidateFieldOnKeyUp(fieldName, e){
   }
 }
 
-if(redirect) {
-  return <Navigate to={"/login"}/>
-}
-
-if(loading) {
-  return <Loading/>
-}
 
   return (
     <form className='login' onSubmit={register}>
-        <h1 >Register</h1>
+        <h1 className='register-header'>Register</h1>
         <input type="text" placeholder='email' 
         value={emailId} onChange={e => setEmailId(e.target.value)}
           onBlur={e => ValidateLoginFields('email',e)}
@@ -92,6 +76,9 @@ if(loading) {
         {password2Invalid && <small style={{color:"red"}}>Password and Confirm Password don't match</small>}
 
           <button disabled={password2Invalid || passwordInvalid || emailInvalid }>Register</button>
+          <br/>
+          <br/>
+          <span style={{color: 'white'}}><b>Already have an account &nbsp;&nbsp; <Link style={{color: "rgb(0 106 213)"}} to={"/login"}>Login</Link></b></span>
     </form>
   )
 }

@@ -1,24 +1,20 @@
 import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { UserContext } from '../context/UserContetx'
 import blogApis from '../utils/blogAPI'
-import { isTokenExist } from '../utils/getToken'
 
 const PostPage = () => {
     const [postInfo, setPostInfo] = useState(null);
     const {id} = useParams();
-    const {userInfo} = useContext(UserContext);
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+    let userInfo = JSON.parse(window.localStorage.getItem("user"));
 
     useEffect(() => {
-        if(id && isTokenExist()) {
+        if(id) {
             GetBlogById(id);
-        }else{
-          navigate("/login")
         }
-    },[id, userInfo?.id])
+    },[id])
     async function GetBlogById(id) {
         try {
           setLoading(true)
@@ -49,11 +45,11 @@ const PostPage = () => {
     if (!postInfo) return '';
   return (
     <div className="post-page">
-    <h1>{postInfo.title}</h1>
-    <time>{postInfo.createdAt}</time>
-    <div className="author">by @{postInfo.createdByName}</div>
+    <h1 className='post-detail-title'>{postInfo.title}</h1>
+    <time className='post-detail-createdat'>{postInfo.createdAt}</time>
+
+    <div className="post-detail-author">by @{postInfo.createdByName}</div>
     {userInfo?.id === postInfo.createdBy && (
-      
       <div className="edit-row">
         <Link className="" to={`/edit/${postInfo.id}`}>
           <svg className='edit-icon small-icon'  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
@@ -71,7 +67,7 @@ const PostPage = () => {
     <div className="image">
       <img src={postInfo.imageURL} alt=""/>
     </div>
-    <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
+    <div className="post-detail-content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
   </div>
   )
 }

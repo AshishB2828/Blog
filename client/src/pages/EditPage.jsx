@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Editor from '../components/Editor'
-import { UserContext } from '../context/UserContetx';
 import blogApis from '../utils/blogAPI';
-import { isTokenExist } from '../utils/getToken';
 
 const EditPage = () => {
 
@@ -17,14 +15,11 @@ const EditPage = () => {
     const [img, setImg] = useState({})
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
-    const {userInfo} = useContext(UserContext);
 
 
     useEffect(() => {
-      if(id && isTokenExist()) {
+      if(id) {
           GetBlogById(id);
-      }else{
-        navigate("/login")
       }
     },[id])
     async function GetBlogById(id) {
@@ -56,7 +51,7 @@ const EditPage = () => {
         try {
             const updatedBlog = await blogApis.Blog.update(data);
             setLoading(false)
-            setRedirect(true);
+            navigate('/post/'+id);
         } catch (error) {
             setLoading(false)
             console.log(error)
@@ -66,9 +61,7 @@ const EditPage = () => {
       setFiles(ev.target.files);
       setImg(URL.createObjectURL(ev.target.files[0]))
     }
-    if (redirect) {
-        return <Navigate to={'/post/'+id} />
-      }
+   
   if(loading){
     return <div>Loading....</div>
   }
@@ -78,10 +71,11 @@ const EditPage = () => {
              placeholder={'Title'}
              value={title}
              onChange={ev => setTitle(ev.target.value)} />
-      <input type="summary"
+      <textarea type="summary"
+            rows={5}
              placeholder={'Summary'}
              value={summary}
-             onChange={ev => setSummary(ev.target.value)} />
+             onChange={ev => setSummary(ev.target.value)} ></textarea>
       <div>
         <img src={img} width='200' height='200'/>
       <input type="file"

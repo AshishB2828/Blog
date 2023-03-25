@@ -5,6 +5,8 @@
 }
 *{
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 a{
   cursor: pointer;
@@ -16,16 +18,29 @@ img{
   max-width: 100%;
 }
 main{
+  /* padding: 10px;
+  max-width: 960px;
+  margin: 0 auto; */
+}
+.main-body{
+  
   padding: 10px;
   max-width: 960px;
   margin: 0 auto;
 }
-header{
+.navbar{
   display:flex;
   justify-content:space-between;
-  margin-top: 20px;
-  margin-bottom: 50px;
   align-items: center;
+  width: 960px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+header{
+  background: #071b2f;
+  border-bottom: 1px solid #112b47;
+  margin-bottom: 50px;
+  color: white;
 }
 header a{
   text-decoration:none;
@@ -35,7 +50,7 @@ header a.logo{
   font-weight: bold;
   font-size: 1.5rem;
 }
-header nav{
+.navbar div{
   display:flex;
   gap: 24px;
 }
@@ -45,7 +60,18 @@ div.post{
   grid-template-columns: 1fr;
   gap: 20px;
   margin-bottom: 30px;
+  background-color: #0b243c;
+  padding: 30px;
+  border: 2px solid #112b47;
+  border-radius: 10px;
+  transition: all .2s ease-in;
 }
+div.post:hover{
+  border: 2px solid #529fed;
+  background-color: #173A5E;
+  
+}
+
 @media screen and (min-width: 700px) {
   div.post{
       grid-template-columns: .9fr 1.1fr;
@@ -69,18 +95,23 @@ div.post p.info{
   gap: 10px;
 }
 div.post p.info a.author{
-  color:#333;
+  color:#b2bac2;
 }
+h2.post-title{
+  color: white;
+}
+
 div.post p.summary{
   margin:10px 0;
   line-height: 1.8rem;
+  color:#b2bac2;
 }
 
 form.login, form.register{
   max-width: 400px;
   margin: 0 auto;
 }
-input{
+input, textarea{
   display: block;
   margin-bottom: 5px;
   width: 100%;
@@ -93,7 +124,7 @@ button{
   cursor: pointer;
   width: 100%;
   display: block;
-  background-color: #555;
+  background-color: rgb(0 106 213);
   border:0;
   color: #fff;
   border-radius: 5px;
@@ -121,6 +152,9 @@ div.post-page h1{
   text-align: center;
   margin: 10px 0 5px;
 }
+.post-detail-title{
+  color: white;
+}
 div.post-page time{
   text-align: center;
   display: block;
@@ -128,17 +162,19 @@ div.post-page time{
   color:#aaa;
   margin: 10px 0;
 }
-div.post-page div.author{
+div.post-page div.post-detail-author{
   text-align: center;
   margin-bottom: 20px;
   font-size: .7rem;
   font-weight: bold;
+  color:#b2bac2;
 }
-div.content p{
+div.post-detail-content p{
   line-height: 1.7rem;
   margin: 30px 0;
+  color: white;
 }
-div.content li{
+div.post-detail-content li{
   margin-bottom: 10px;
 }
 div.edit-row{
@@ -191,7 +227,22 @@ a svg{
   color: red;
 }
 
-.loadmore {
-  width: 200px !important;
-  margin: 2px auto;
+.post-image img {
+  border-radius: 10px;
+}
+
+.quill {
+  color: white;
+}
+.ql-toolbar.ql-snow{
+  color: white !important;
+}
+
+.login-header, .register-header {
+  color: white;
+  padding: 20px;
+}
+
+.post-detail-content{
+  color: white;
 }
