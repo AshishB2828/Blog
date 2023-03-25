@@ -8,12 +8,15 @@ const Post = ({id,title, summary, imageURL, content, createdAt,createdByName}) =
             <img src={imageURL} alt="" />
         </div>
         <div className="texts">
-        <h2 className='post-title'><Link to={`/post/${id}`}>{title}</Link></h2>
+        <h2 className='post-title'><Link to={`/post/${id}`}>
+            {title.length < 10 ? title : <>{title.substring(0,15)}....</>}
+          </Link></h2>
           <p className="info">
             <a href="" className="author">{createdByName}</a>
             <time>{createdAt}</time>
           </p>
-        <p className="summary">{summary}</p>
+        <p className="summary">{summary.length <450 ? <>{summary}</> 
+                              : <>{ String(summary).substring(0, 500)}.........</> }</p>
         </div>
         </div>
   )

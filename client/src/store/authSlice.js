@@ -28,10 +28,6 @@ const authSlice = createSlice ({
 export const authAction = authSlice.actions;
 export default authSlice.reducer
 export const selectCurrentUser = (state) =>{
-    return  state.user
+    return  state.auth.user
 };
-export const selectCurrentToken = (state) => state.token;
-
-export const store = configureStore({
-    reducer: authSlice.reducer
-});
+export const selectCurrentToken = (state) => state.auth.token;

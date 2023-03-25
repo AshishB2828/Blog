@@ -1,9 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation } from 'react-router';
+import { selectCurrentToken } from '../store/authSlice';
 
 const PublicRoute = () => {
-    const token = useSelector(state => state.token);
+    const token = useSelector(selectCurrentToken);
     const location = useLocation();
     const from = location.state?.from?.pathname || "/"
 
