@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { authAction } from '../store/authSlice';
 import blogApis from '../utils/blogAPI';
 
 const LoginPage = () => {
 
-  const [emailId, setEmailId] = useState("")
-  const [emailInvalid, setEmailInvalid] = useState(false)
-  const [password, setPassword] = useState("")
-  const [passwordInvalid, setPasswordInvalid] = useState(false)
+  const [emailId, setEmailId] = useState("");
+  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordInvalid, setPasswordInvalid] = useState(false);
 
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/"
   async function login(event) {
     event.preventDefault();
     try {

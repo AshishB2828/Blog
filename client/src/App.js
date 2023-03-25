@@ -15,6 +15,7 @@ import MyPosts from './pages/MyPosts';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { authAction } from './store/authSlice';
+import RequireAuth from './components/RequireAuth';
 
 function App() {
     const dispatch = useDispatch();
@@ -27,20 +28,17 @@ function App() {
     console.log(isLoggedIn)
   return (
       <Routes>
-        <Route path='/' element={<Layout />}>
-              
-          {isLoggedIn && <Route index element ={ <IndexPage/>}/>}
-          {!isLoggedIn ? 
-            <>
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/register' element={<RegisterPage />} />
-            </>:
-            <>
-              <Route path='/create-post' element={<CreatePost />} />
-              <Route path='/my-posts' element={<MyPosts />} />
-              <Route path='/post/:id' element={<PostPage />} />
-              <Route path='/edit/:id' element={<EditPage />} />
-            </>}
+        <Route path='/' element={<Layout />}>      
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          
+          <Route element={<RequireAuth/>}>
+            <Route index element ={ <IndexPage/>}/>
+            <Route path='/create-post' element={<CreatePost />} />
+            <Route path='/my-posts' element={<MyPosts />} />
+            <Route path='/post/:id' element={<PostPage />} />
+            <Route path='/edit/:id' element={<EditPage />} />
+          </Route>
           
         </Route>
         <Route path="*" element={<PageNotFound />} />
