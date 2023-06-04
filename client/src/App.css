@@ -246,3 +246,6 @@ a svg{
 .post-detail-content{
   color: white;
 }
+.pointer{
+  cursor: pointer;
+}

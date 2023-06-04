@@ -11,9 +11,9 @@ const RequireAuth = () => {
         token ? <Outlet/> : 
                 <Navigate 
                     to={"/login"}
-                    state={{from: location}}
                     replace
                     />
+
     )
 }
 

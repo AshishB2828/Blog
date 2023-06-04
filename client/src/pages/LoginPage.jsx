@@ -12,19 +12,16 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [passwordInvalid, setPasswordInvalid] = useState(false);
 
-  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/"
   async function login(event) {
     event.preventDefault();
     try {
        const data = await blogApis.Account.login({EmailId: emailId, Password: password});
-      //  console.log(data)
        dispatch(authAction.login({user: data, token: data.token}));
-       window.localStorage.setItem("token", JSON.stringify(data.token))
-       window.localStorage.setItem("user", JSON.stringify(data))
+       window.localStorage.setItem("blog-token", JSON.stringify(data.token))
+       window.localStorage.setItem("blog-user", JSON.stringify(data))
        navigate("/")        
       } catch (error) {
       console.log(error)

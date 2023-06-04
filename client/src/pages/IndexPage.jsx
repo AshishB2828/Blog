@@ -3,7 +3,8 @@ import { useState } from 'react'
 import Post from '../components/Post'
 import blogApis from '../utils/blogAPI'
 import { useNavigate } from 'react-router-dom'
-import { isTokenExist } from '../utils/getToken'
+import { useSelector } from 'react-redux'
+import { selectCurrentToken } from '../store/authSlice'
 
 
 const IndexPage = () => {
@@ -11,13 +12,10 @@ const IndexPage = () => {
   const [blogs, setBlogs] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const token = useSelector(selectCurrentToken);
 
   useEffect(() => {
-    if(isTokenExist()) {
-      GetAllBlogs();
-    }else{
-      navigate("/login")
-    }
+    GetAllBlogs();
   }, [])
 
   async function GetAllBlogs() {

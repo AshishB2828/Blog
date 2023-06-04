@@ -80,6 +80,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteBlogById (int id)
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
@@ -95,6 +96,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet("myblogs")]
+        [Authorize]
         public async Task<List<BlogResponse>> PostByPersonId()
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
