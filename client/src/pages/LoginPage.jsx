@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { authAction } from '../store/authSlice';
 import blogApis from '../utils/blogAPI';
 import {Link} from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
 
@@ -11,12 +12,14 @@ const LoginPage = () => {
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordInvalid, setPasswordInvalid] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function login(event) {
     event.preventDefault();
+    setLoading(true)
     try {
        const data = await blogApis.Account.login({EmailId: emailId, Password: password});
        dispatch(authAction.login({user: data, token: data.token}));
@@ -25,7 +28,21 @@ const LoginPage = () => {
        navigate("/")        
       } catch (error) {
       console.log(error)
+      const errMsg = error?.response?.data ? error.response.data : "Somethingwent wrong"
+      toast.error(errMsg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
+      finally{
+        setLoading(false)
+      }
   }
 
 function ValidateLoginFields(fieldName, e){
@@ -57,7 +74,9 @@ function ValidateLoginFields(fieldName, e){
         />
        { passwordInvalid && <small style={{color:"red"}}>Password Required</small>}
         
-          <button disabled={passwordInvalid || emailInvalid }>Login</button>
+          <button disabled={passwordInvalid || emailInvalid }>{
+             loading? "Loading....": "Login"
+          }</button>
           <br/>
           <br/>
           <span style={{color: 'white'}}><b>Don't have an account &nbsp;&nbsp; 

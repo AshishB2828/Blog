@@ -8,7 +8,7 @@ const PostPage = () => {
     const {id} = useParams();
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
-    let userInfo = JSON.parse(window.localStorage.getItem("user"));
+    let userInfo = JSON.parse(window.localStorage.getItem("blog-user"));
 
     useEffect(() => {
         if(id) {

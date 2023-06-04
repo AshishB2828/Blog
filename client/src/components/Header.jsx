@@ -17,7 +17,8 @@ const Header = () => {
 
  async function logout(){
   dispatch(authAction.logout());
-  localStorage.removeItem("blog-token")
+  localStorage.removeItem("blog-token");
+  localStorage.removeItem("blog-user");
    navigate("/login")
   }
 

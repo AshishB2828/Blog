@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
 import blogApis from '../utils/blogAPI';
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 
 const RegisterPage = () => {
@@ -12,6 +13,7 @@ const RegisterPage = () => {
   const [passwordInvalid, setPasswordInvalid] = useState(false)
   const [password2, setPassword2] = useState("")
   const [password2Invalid, setPassword2Invalid] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
 
   async function register(event) {
@@ -23,6 +25,17 @@ const RegisterPage = () => {
         navigate("/login")
       } catch (error) {
       console.log(error)
+      const errMsg = error?.response?.data ? error.response.data : "Somethingwent wrong"
+      toast.error(errMsg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
   }
 
@@ -75,7 +88,9 @@ function ValidateFieldOnKeyUp(fieldName, e){
         />
         {password2Invalid && <small style={{color:"red"}}>Password and Confirm Password don't match</small>}
 
-          <button disabled={password2Invalid || passwordInvalid || emailInvalid }>Register</button>
+          <button disabled={password2Invalid || passwordInvalid || emailInvalid }>{
+             loading? "Loading....": "Register"
+          }</button>
           <br/>
           <br/>
           <span style={{color: 'white'}}><b>Already have an account &nbsp;&nbsp; <Link style={{color: "rgb(0 106 213)"}} to={"/login"}>Login</Link></b></span>

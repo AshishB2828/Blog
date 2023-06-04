@@ -19,6 +19,7 @@ axios.interceptors.response.use(res => {
     switch(status) {
         case 401 : {
             window.localStorage.removeItem("blog-token");
+            window.localStorage.removeItem("blog-user");
             window.location.href = "/login";
             break;
         }
