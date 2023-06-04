@@ -249,3 +249,7 @@ a svg{
 .pointer{
   cursor: pointer;
 }
+.text-label{
+  color: white;
+  margin-bottom: 5px;
+}

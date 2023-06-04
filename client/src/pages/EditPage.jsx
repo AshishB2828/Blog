@@ -67,20 +67,26 @@ const EditPage = () => {
   }
   return (
     <form onSubmit={updatePost}>
+      <label className='text-label' htmlFor="title">Title</label>
       <input type="title"
              placeholder={'Title'}
              value={title}
              onChange={ev => setTitle(ev.target.value)} />
+      <label className='text-label' htmlFor="summary">Summary</label>
       <textarea type="summary"
             rows={5}
              placeholder={'Summary'}
              value={summary}
              onChange={ev => setSummary(ev.target.value)} ></textarea>
+      <label className='text-label' htmlFor="file">Image</label>
+      
       <div>
         <img src={img} width='200' height='200'/>
       <input type="file"
              onChange={FileChange} />
       </div>
+      <br/>
+      <label className='text-label' htmlFor="content">Content</label>
       <Editor onChange={setContent} value={content} />
       <button style={{marginTop:'5px'}}>Update post</button>
     </form>

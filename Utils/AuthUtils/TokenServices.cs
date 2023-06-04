@@ -25,8 +25,8 @@ namespace Utils.AuthUtils
 
         public string CreateJwtToken(ApplicationUser user)
         {
-            DateTime expiration = DateTime.Now.AddMinutes(1);
-            //DateTime expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"]));
+
+            DateTime expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:EXPIRATION_MINUTES"]));
 
             Claim[] claims = new Claim[] {
                     new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), //Subject (user id)
