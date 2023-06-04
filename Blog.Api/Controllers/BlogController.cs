@@ -30,7 +30,7 @@ namespace Blog.Api.Controllers
         [Authorize]
         public async Task<List<BlogResponse>> GetAllBlogs()
         {
-            var blogData =  await _blogServices.GetAllBlogs();
+            var blogData =  await _blogServices.GetAllAvailableBlogs();
             foreach (var item in blogData)
             {
                 item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);
@@ -100,7 +100,7 @@ namespace Blog.Api.Controllers
         public async Task<List<BlogResponse>> PostByPersonId()
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
-            var blogData = await _blogServices.PostByPersonId(user.Id);
+            var blogData = await _blogServices.GetPostByPersonId(user.Id);
             foreach (var item in blogData)
             {
                 item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);

@@ -59,7 +59,7 @@ namespace Service.Services
             return true;
         }
 
-        public async Task<List<BlogResponse>> GetAllBlogs()
+        public async Task<List<BlogResponse>> GetAllAvailableBlogs()
         {
             var blogs = await _blogContext.Blogs
                                 .Include(b => b.CreatedByUser)
@@ -125,8 +125,9 @@ namespace Service.Services
         }
 
 
-        public async Task<List<BlogResponse>> PostByPersonId(int userId)
+        public async Task<List<BlogResponse>> GetPostByPersonId(int userId)
         {
+
             var blogs = await _blogContext.Blogs
                                 .Where(b => b.CreatedBy == userId)
                                 .Include(b => b.CreatedByUser)

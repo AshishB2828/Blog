@@ -14,9 +14,9 @@ namespace Service.ServiceContracts
 
         Task<BlogResponse> UpdateBlog(BlogUpdateDto blogCreateDto, int currentUserId);
 
-        Task<List<BlogResponse>> GetAllBlogs();
+        Task<List<BlogResponse>> GetAllAvailableBlogs();
         Task<BlogResponse> GetPostById(int id);
         Task<bool> DeletePostById(int id, int userId);
-        Task<List<BlogResponse>> PostByPersonId(int userId);
+        Task<List<BlogResponse>> GetPostByPersonId(int userId);
     }
 }
