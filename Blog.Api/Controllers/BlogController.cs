@@ -28,9 +28,9 @@ namespace Blog.Api.Controllers
 
         [HttpGet("All")]
         [Authorize]
-        public async Task<List<BlogResponse>> GetAllBlogs([FromQuery]int page)
+        public async Task<List<BlogResponse>> GetAllBlogs()
         {
-            var blogData =  await _blogServices.GetAllBlogs(page);
+            var blogData =  await _blogServices.GetAllBlogs();
             foreach (var item in blogData)
             {
                 item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);
@@ -80,6 +80,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteBlogById (int id)
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
@@ -95,10 +96,11 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet("myblogs")]
-        public async Task<List<BlogResponse>> PostByPersonId([FromQuery] int page)
+        [Authorize]
+        public async Task<List<BlogResponse>> PostByPersonId()
         {
             var user = await _userManager.FindByNameAsync(User.Identity?.Name);
-            var blogData = await _blogServices.PostByPersonId(user.Id, page);
+            var blogData = await _blogServices.PostByPersonId(user.Id);
             foreach (var item in blogData)
             {
                 item.ImageURL = String.Format("{0}://{1}{2}/images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.ImageURL);

@@ -5,11 +5,11 @@ import { selectCurrentToken } from '../store/authSlice';
 
 const PublicRoute = () => {
     const token = useSelector(selectCurrentToken);
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/"
+    // const location = useLocation();
+    // const from = location.state?.from?.pathname || "/"
 
     return (
-        token ? <Navigate to={from}/> : 
+        token ? <Navigate to={"/"}/> : 
                 <Outlet/>
     )
 }

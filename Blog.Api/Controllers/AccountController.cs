@@ -38,12 +38,12 @@ namespace Blog.Api.Controllers
             if(!ModelState.IsValid) return BadRequest(loginData);
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginData.EmailId);
-            if (user == null) return BadRequest("Invalid credintials!");
+            if (user == null) return BadRequest("Invalid credintials");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginData.Password, false);
 
             if (result.Succeeded) return new LoginResponseDto 
-            { EmailId = user.Email,Token = _tokenServices.CreateToken(user), Id = user.Id
+            { EmailId = user.Email,Token = _tokenServices.CreateJwtToken(user), Id = user.Id
             };
 
             return BadRequest("Invalid credintials!");

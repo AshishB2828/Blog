@@ -14,18 +14,19 @@ import { useEffect } from 'react';
 import { authAction } from './store/authSlice';
 import RequireAuth from './components/RequireAuth';
 import PublicRoute from './components/PublicRoute';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const dispatch = useDispatch();
     useEffect(() => {
-      if(localStorage.getItem("user")){
-        let user = JSON.parse(localStorage.getItem("user"));
-         dispatch(authAction.login({user: user, token: user.token}))
-      }
+      
     }, [dispatch])
     const isLoggedIn = useSelector(state => state.isLoggedIn);
   return (
-      <Routes>
+    <>
+          <ToastContainer />
+          <Routes>
         <Route path='/' element={<Layout />}>     
           <Route element={<PublicRoute />}>
             <Route path='/login' element={<LoginPage />} />
@@ -42,6 +43,8 @@ function App() {
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+    </>
+     
   );
 }
 

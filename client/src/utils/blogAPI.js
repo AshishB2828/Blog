@@ -5,7 +5,7 @@ axios.defaults.baseURL = "https://localhost:7019/api"
 
 axios.interceptors.request.use(config => {
 
-    let token = JSON.parse(window.localStorage.getItem("token"));
+    let token = JSON.parse(window.localStorage.getItem("blog-token"));
     if(token) config.headers.Authorization = `Bearer ${token}`;
     return config;
 
@@ -18,7 +18,8 @@ axios.interceptors.response.use(res => {
     const {data, status} = error.response;
     switch(status) {
         case 401 : {
-            window.localStorage.removeItem("token");
+            window.localStorage.removeItem("blog-token");
+            window.localStorage.removeItem("blog-user");
             window.location.href = "/login";
             break;
         }

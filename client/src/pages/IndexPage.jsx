@@ -3,7 +3,8 @@ import { useState } from 'react'
 import Post from '../components/Post'
 import blogApis from '../utils/blogAPI'
 import { useNavigate } from 'react-router-dom'
-import { isTokenExist } from '../utils/getToken'
+import { useSelector } from 'react-redux'
+import { selectCurrentToken } from '../store/authSlice'
 
 
 const IndexPage = () => {
@@ -11,21 +12,16 @@ const IndexPage = () => {
   const [blogs, setBlogs] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const [page, setPage] = useState(1)
+  const token = useSelector(selectCurrentToken);
 
   useEffect(() => {
-    if(isTokenExist()) {
-      GetAllBlogs();
-    }else{
-      navigate("/login")
-    }
-  }, [page])
+    GetAllBlogs();
+  }, [])
 
   async function GetAllBlogs() {
     try {
       setLoading(true);
-      const allPosts = await blogApis.Blog.all(page);
-  
+      const allPosts = await blogApis.Blog.all();
       setBlogs(allPosts ?? []);
       setLoading(false);
       // console.log(allPosts)
@@ -33,10 +29,6 @@ const IndexPage = () => {
       setLoading(false);
       console.log(error)
     }
-  }
-
-  function LoadMorePosts() {
-    setPage(page+1);
   }
 
   if(loading) return <div>Loading....</div>
@@ -48,7 +40,7 @@ const IndexPage = () => {
           return <Post key={blog.id} {...blog} />
         })
       }
-      <button onClick={LoadMorePosts} className='loadmore'>Load more</button>
+    
     </>
   )
 }

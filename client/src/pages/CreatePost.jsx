@@ -1,9 +1,10 @@
 import 'react-quill/dist/quill.snow.css';
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 import Editor from '../components/Editor';
 import blogApis from "../utils/blogAPI";
-import { isTokenExist } from "../utils/getToken";
+import { useSelector } from 'react-redux';
+import { selectCurrentToken } from '../store/authSlice';
 
 const CreatePost = () => {
 
@@ -12,14 +13,6 @@ const CreatePost = () => {
     const [content,setContent] = useState('');
     const [files, setFiles] = useState('');
     const [redirect, setRedirect] = useState(false);
-    const navigate = useNavigate()
-
-
-    useEffect(() => {
-        if(!isTokenExist()){
-          navigate("/login")
-        }
-    }, [])
 
 
     async function createNewPost(event){
